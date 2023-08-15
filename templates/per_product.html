@@ -61,6 +61,8 @@
                 <h3 class="text-center">{{ inventory.description }}</h3>
             </div>
         </div>
+        <a class="btn btn-outline-success btn-sm mb-4" href="{% url 'update_inventory' inventory.id %}">Update Item</a>
+        <a class="btn btn-danger btn-sm" href="{% url 'delete_inventory' inventory.id %}">Delete Item</a>
     </div>
 </div>
 {% endblock %}
