@@ -2,6 +2,8 @@ from django.shortcuts import get_object_or_404, render, redirect
 from .models import Inventory
 from django.contrib.auth.decorators import login_required
 from .forms import AddInventoryForm, UpdateInventoryForm
+import csv
+from django.http import HttpResponse
 
 # Create your views here.
 
@@ -65,3 +67,22 @@ def update_product(request, pk):
     return render(request, "inventory_update.html", context=context)
 
 
+def export_csv(request):
+    # Define the response object with appropriate headers for a CSV file
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="current_stock.csv"'
+
+    # Create a CSV writer object
+    writer = csv.writer(response)
+
+    # Write the header row
+    writer.writerow(['Manufacturer', 'Name', 'Item Code', 'Cost Price', 'Quantity In Stock', 'Description'])
+
+    # Query all items from the database
+    items = Inventory.objects.all()
+
+    # Write the item data to the CSV file
+    for item in items:
+        writer.writerow([item.manufacturer, item.name, item.item_code, item.cost_price, item.quantity_in_stock, item.description])
+
+    return response
