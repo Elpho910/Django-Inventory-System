@@ -53,9 +53,9 @@ def update_product(request, pk):
     if request.method == "POST":
         update_form = UpdateInventoryForm(data=request.POST)
         if update_form.is_valid():
-            inventory.manufacturer = update_form.data['manufacturer']
-            inventory.name = update_form.data['name']
-            inventory.item_code = update_form.data['item_code']
+            inventory.brand = update_form.data['manufacturer']
+            inventory.title = update_form.data['name']
+            inventory.manufacturer_part_number = update_form.data['item_code']
             inventory.cost_price = update_form.data['cost_price']
             inventory.quantity_in_stock = update_form.data['quantity_in_stock']
             inventory.save()
@@ -76,13 +76,13 @@ def export_csv(request):
     writer = csv.writer(response)
 
     # Write the header row
-    writer.writerow(['Manufacturer', 'Name', 'Item Code', 'Cost Price', 'Quantity In Stock', 'Description'])
+    writer.writerow(['Brand', 'Title', 'Manufacturer Part Number', 'Cost', 'Stock', 'Description'])
 
     # Query all items from the database
     items = Inventory.objects.all()
 
     # Write the item data to the CSV file
     for item in items:
-        writer.writerow([item.manufacturer, item.name, item.item_code, item.cost_price, item.quantity_in_stock, item.description])
+        writer.writerow([item.brand, item.title, item.manufacturer_part_number, item.cost_price, item.quantity_in_stock, item.description])
 
     return response
