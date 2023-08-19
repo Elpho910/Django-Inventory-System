@@ -53,9 +53,9 @@ def update_product(request, pk):
     if request.method == "POST":
         update_form = UpdateInventoryForm(data=request.POST)
         if update_form.is_valid():
-            inventory.brand = update_form.data['manufacturer']
-            inventory.title = update_form.data['name']
-            inventory.manufacturer_part_number = update_form.data['item_code']
+            inventory.brand = update_form.data['brand']
+            inventory.title = update_form.data['title']
+            inventory.manufacturer_part_number = update_form.data['manufacturer_part_number']
             inventory.cost_price = update_form.data['cost_price']
             inventory.quantity_in_stock = update_form.data['quantity_in_stock']
             inventory.save()

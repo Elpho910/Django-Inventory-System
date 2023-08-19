@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 
+# change this to production for production environment
+DJANGO_ENV = os.environ.get('DJANGO_ENV', 'development')
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -26,7 +29,7 @@ SECRET_KEY = "django-insecure-vw42mb&iyvwh-v^n%fz%0-s^01pjtz^j5wn+3e*z@7jy_mt%*8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['site_url_here', '127.0.0.1']
 
 
 # Application definition
@@ -77,13 +80,26 @@ WSGI_APPLICATION = "inventory_system.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+# SQLite for development
+if DJANGO_ENV == 'development':
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
     }
-}
-
+# MySQL for production
+elif DJANGO_ENV == 'production':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'insert_db_name_here',
+            'USER': 'insert_db_user_here',
+            'PASSWORD': 'insert_db_password_here',
+            'HOST': 'localhost',
+            'PORT': '3306',
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -137,4 +153,5 @@ CRISPY_TEMPLATE_PACK = 'bootstrap5'
 # login url
 LOGIN_REDIRECT_URL = "/inventory"
 LOGIN_URL = "login"
-
+CSRF_TRUSTED_ORIGINS = ['site_url_here']
+CSRF_COOKIE_DOMAIN = '.site_url_here'

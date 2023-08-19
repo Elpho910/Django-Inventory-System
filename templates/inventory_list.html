@@ -5,9 +5,9 @@
         <thead class="thead-dark">
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Manufacturer</th>
-                <th scope="col">Name</th>
-                <th scope="col">Item Code</th>
+                <th scope="col">Brand</th>
+                <th scope="col">Title</th>
+                <th scope="col">Manufacturer Part Number</th>
                 <th scope="col">Cost Price</th>
                 <th scope="col">Quantity In Stock</th>
             </tr>
@@ -16,9 +16,9 @@
             {% for inventory in inventories %}
                 <tr style="cursor: pointer; cursor: hand;" onclick="window.location= `{% url 'per_product' inventory.id %}`">
                     <th scope="row">{{ forloop.counter }}</th>
-                    <th scope="row">{{ inventory.manufacturer }}</th>
-                    <th scope="row">{{ inventory.name }}</th>
-                    <th scope="row">{{ inventory.item_code }}</th>
+                    <th scope="row">{{ inventory.brand }}</th>
+                    <th scope="row">{{ inventory.title }}</th>
+                    <th scope="row">{{ inventory.manufacturer_part_number }}</th>
                     <th scope="row">{{ inventory.cost_price }}</th>
                     <th scope="row">{{ inventory.quantity_in_stock }}</th>
                 </tr>
