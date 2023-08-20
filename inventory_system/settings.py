@@ -135,8 +135,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = "static/"
-STATICFILES_DIRS = [BASE_DIR / "static"]
+STATIC_URL = "staticfiles/"
+STATICFILES_DIRS = [BASE_DIR / "staticfiles"]
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Default primary key field type
@@ -153,5 +153,5 @@ CRISPY_TEMPLATE_PACK = 'bootstrap5'
 # login url
 LOGIN_REDIRECT_URL = "/inventory"
 LOGIN_URL = "login"
-CSRF_TRUSTED_ORIGINS = ['site_url_here']
-CSRF_COOKIE_DOMAIN = '.site_url_here'
+CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1']
+CSRF_COOKIE_DOMAIN = '127.0.0.1'
