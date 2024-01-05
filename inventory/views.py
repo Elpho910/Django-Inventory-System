@@ -5,6 +5,8 @@ from .forms import AddInventoryForm, UpdateInventoryForm
 import csv
 from django.http import HttpResponse
 from django.db.models import Q
+from django.core import management
+
 
 # Create your views here.
 
@@ -88,6 +90,12 @@ def search_results(request):
         results = []
 
     return render(request, "search_results.html", {"results": results})
+
+
+def export_csv_kqm(request):
+    management.call_command("export_inventory")
+
+    return redirect("/inventory/")
 
 
 @login_required()
