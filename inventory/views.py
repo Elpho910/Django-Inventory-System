@@ -65,6 +65,12 @@ def update_product(request, pk):
     return render(request, "inventory_update.html", context=context)
 
 
+@login_required()
+def search_products(request):
+    # inventories = Inventory.objects.all()
+    return render(request, "inventory_search.html")
+
+
 def export_csv(request):
     # Define the response object with appropriate headers for a CSV file
     response = HttpResponse(content_type="text/csv")
