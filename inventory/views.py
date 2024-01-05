@@ -95,7 +95,7 @@ def search_results(request):
 def export_csv_kqm(request):
     management.call_command("export_inventory")
 
-    return redirect("/inventory/")
+    return render(request, "export_result.html")
 
 
 @login_required()
