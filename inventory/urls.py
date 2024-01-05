@@ -9,6 +9,7 @@ from .views import (
     update_product,
     export_csv,
     search_products,
+    search_results,
 )
 
 urlpatterns = [
@@ -19,4 +20,5 @@ urlpatterns = [
     path("update/<int:pk>", update_product, name="update_inventory"),
     path("export_csv/", export_csv, name="export_csv"),
     path("search/", search_products, name="search_products"),
+    path("search_results/", search_results, name="search_results"),
 ]

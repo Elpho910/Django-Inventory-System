@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div class="content-section">
+    {% if results %}
+    <table class="table table-striped table-bordered table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Brand</th>
+                <th scope="col">Title</th>
+                <th scope="col">Manufacturer Part Number</th>
+                <th scope="col">Barcode</th>
+                <th scope="col">Cost Price</th>
+                <th scope="col">Quantity In Stock</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in results %}
+            <tr style="cursor: pointer; cursor: hand;" onclick="window.location= `{% url 'per_product' item.id %}`">
+                <th scope="row">{{ forloop.counter }}</th>
+                <th scope="row">{{ item.brand }}</th>
+                <th scope="row">{{ item.title }}</th>
+                <th scope="row">{{ item.manufacturer_part_number }}</th>
+                <th scope="row">{{ item.barcode }}</th>
+                <th scope="row">{{ item.cost_price }}</th>
+                <th scope="row">{{ item.quantity_in_stock }}</th>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No results found for "{{ query }}"</p>
+    {% endif %}
+</div>
+{% endblock %}

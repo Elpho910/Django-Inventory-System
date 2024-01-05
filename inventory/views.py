@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .forms import AddInventoryForm, UpdateInventoryForm
 import csv
 from django.http import HttpResponse
+from django.db.models import Q
 
 # Create your views here.
 
@@ -67,8 +68,26 @@ def update_product(request, pk):
 
 @login_required()
 def search_products(request):
-    # inventories = Inventory.objects.all()
     return render(request, "inventory_search.html")
+
+
+@login_required()
+def search_results(request):
+    query = request.GET.get("query", "")
+    if query:
+        results = Inventory.objects.filter(
+            Q(brand__icontains=query)
+            | Q(title__icontains=query)
+            | Q(manufacturer_part_number__icontains=query)
+            | Q(barcode__icontains=query)
+            | Q(cost_price__icontains=query)
+            | Q(quantity_in_stock__icontains=query)
+            | Q(description__icontains=query)
+        )
+    else:
+        results = []
+
+    return render(request, "search_results.html", {"results": results})
 
 
 def export_csv(request):
