@@ -7,14 +7,33 @@ import csv
 
 
 class Command(BaseCommand):
-    help = 'Exports inventory to a CSV file'
+    help = "Exports inventory to a CSV file"
 
     def handle(self, *args, **kwargs):
-        with open('inventory.csv', 'w', newline='') as file:
+        with open("inventory.csv", "w", newline="") as file:
             writer = csv.writer(file)
-            writer.writerow(['Manufacturer', 'Name', 'Item Code', 'Cost Price', 'Quantity In Stock', 'Description'])
+            writer.writerow(
+                [
+                    "Brand",
+                    "Title",
+                    "Manufacturer Part Number",
+                    "Barcode",
+                    "Quantity In Stock",
+                    "Description",
+                ]
+            )
             items = Inventory.objects.all()
             for item in items:
-                writer.writerow([item.manufacturer, item.name, item.item_code, item.cost_price, item.quantity_in_stock, item.description])
+                writer.writerow(
+                    [
+                        item.brand,
+                        item.title,
+                        item.manufacturer_part_number,
+                        item.barcode,
+                        item.cost_price,
+                        item.quantity_in_stock,
+                        item.description,
+                    ]
+                )
 
-        self.stdout.write(self.style.SUCCESS('Successfully exported inventory to CSV'))
+        self.stdout.write(self.style.SUCCESS("Successfully exported inventory to CSV"))
