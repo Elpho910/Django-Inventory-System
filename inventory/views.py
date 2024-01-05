@@ -79,7 +79,7 @@ def export_csv(request):
             "Brand",
             "Title",
             "Manufacturer Part Number",
-            "barcode",
+            "Barcode",
             "Cost",
             "Stock",
             "Description",
