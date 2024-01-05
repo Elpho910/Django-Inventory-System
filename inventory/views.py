@@ -90,6 +90,7 @@ def search_results(request):
     return render(request, "search_results.html", {"results": results})
 
 
+@login_required()
 def export_csv(request):
     # Define the response object with appropriate headers for a CSV file
     response = HttpResponse(content_type="text/csv")

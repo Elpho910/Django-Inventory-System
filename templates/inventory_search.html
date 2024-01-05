@@ -2,10 +2,11 @@
 {% load static %}
 {% block content %}
 <div class="content-section">
-    <p>Search page routing</p>
     <form method="get" action="{% url 'search_results' %}">
-        <input type="text" name="query" placeholder="Search Inventory">
-        <input type="submit" value="search">
+        <div class="form-group">
+            <input type="text" name="query" placeholder="Search Inventory">
+            <input type="submit" value="search">
+        </div>
     </form>
 </div>
 {% endblock %}
