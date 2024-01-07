@@ -57,6 +57,7 @@ def update_product(request, pk):
                 "manufacturer_part_number"
             ]
             inventory.barcode = update_form.data["barcode"]
+            inventory.category = update_form.data["category"]
             inventory.cost_price = update_form.data["cost_price"]
             inventory.quantity_in_stock = update_form.data["quantity_in_stock"]
             inventory.save()
@@ -82,6 +83,7 @@ def search_results(request):
             | Q(title__icontains=query)
             | Q(manufacturer_part_number__icontains=query)
             | Q(barcode__icontains=query)
+            | Q(category_icontains=query)
             | Q(cost_price__icontains=query)
             | Q(quantity_in_stock__icontains=query)
             | Q(description__icontains=query)
@@ -114,6 +116,7 @@ def export_csv(request):
             "Title",
             "Manufacturer Part Number",
             "Barcode",
+            "Category",
             "Cost",
             "Stock",
             "Description",
@@ -131,6 +134,7 @@ def export_csv(request):
                 item.title,
                 item.manufacturer_part_number,
                 item.barcode,
+                item.category,
                 item.cost_price,
                 item.quantity_in_stock,
                 item.description,
