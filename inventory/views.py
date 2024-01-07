@@ -83,7 +83,7 @@ def search_results(request):
             | Q(title__icontains=query)
             | Q(manufacturer_part_number__icontains=query)
             | Q(barcode__icontains=query)
-            | Q(category_icontains=query)
+            | Q(category__icontains=query)
             | Q(cost_price__icontains=query)
             | Q(quantity_in_stock__icontains=query)
             | Q(description__icontains=query)
