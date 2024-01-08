@@ -146,6 +146,7 @@ def export_csv(request):
     return response
 
 
+@login_required
 def picking_view(request):
     if request.method == "POST":
         # Get lists of codes and quantities from the POST request
