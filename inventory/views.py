@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, render, redirect
 from .models import Inventory
 from django.contrib.auth.decorators import login_required
-from .forms import AddInventoryForm, UpdateInventoryForm
+from .forms import AddInventoryForm, UpdateInventoryForm, PickingForm
 import csv
 from django.http import HttpResponse
 from django.db.models import Q
@@ -142,3 +142,25 @@ def export_csv(request):
         )
 
     return response
+
+
+def picking_view(request):
+    if request.method == "POST":
+        form = PickingForm(request.POST)
+        if form.is_valid():
+            code = form.cleaned_data["code"]
+            quantity = form.cleaned_data["quantity"]
+
+            # Search DB for barcode or part number entered
+            item = Inventory.objects.filter(
+                Q(barcode=code) | Q(manufacturer_part_number=code)
+            ).first()
+
+            if item and item.quantity_in_stock >= quantity:
+                item.quantity_in_stock -= quantity
+                item.save()
+
+    else:
+        form = PickingForm()
+
+    return render(request, "picking_form.html", {"form": form})

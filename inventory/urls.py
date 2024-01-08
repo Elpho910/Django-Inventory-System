@@ -11,6 +11,7 @@ from .views import (
     search_products,
     search_results,
     export_csv_kqm,
+    picking_view,
 )
 
 urlpatterns = [
@@ -23,4 +24,5 @@ urlpatterns = [
     path("search/", search_products, name="search_products"),
     path("search_results/", search_results, name="search_results"),
     path("export_csv_kqm/", export_csv_kqm, name="export_csv_kqm"),
+    path("picking/", picking_view, name="picking"),
 ]

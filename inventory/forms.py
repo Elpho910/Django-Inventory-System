@@ -2,6 +2,7 @@
 
 from django.forms import ModelForm
 from .models import Inventory
+from django import forms
 
 
 class AddInventoryForm(ModelForm):
@@ -32,3 +33,8 @@ class UpdateInventoryForm(ModelForm):
             "quantity_in_stock",
             "description",
         ]
+
+
+class PickingForm(forms.Form):
+    code = forms.CharField(label="Barcode/Part Number", max_length=300)
+    quantity = forms.IntegerField(label="Quantity", min_value=1)
