@@ -6,6 +6,8 @@ import csv
 from django.http import HttpResponse
 from django.db.models import Q
 from django.core import management
+from django.db import transaction
+from django.contrib import messages
 
 
 # Create your views here.
@@ -146,21 +148,48 @@ def export_csv(request):
 
 def picking_view(request):
     if request.method == "POST":
-        form = PickingForm(request.POST)
-        if form.is_valid():
-            code = form.cleaned_data["code"]
-            quantity = form.cleaned_data["quantity"]
+        # Get lists of codes and quantities from the POST request
+        codes = request.POST.getlist("code")
+        quantities = request.POST.getlist("quantity")
 
-            # Search DB for barcode or part number entered
-            item = Inventory.objects.filter(
-                Q(barcode=code) | Q(manufacturer_part_number=code)
-            ).first()
+        # Initialize a variable to track success of all operations
+        all_successful = True
 
-            if item and item.quantity_in_stock >= quantity:
-                item.quantity_in_stock -= quantity
-                item.save()
+        # Use a database transaction to ensure atomicity
+        with transaction.atomic():
+            for code, quantity_str in zip(codes, quantities):
+                try:
+                    quantity = int(quantity_str)
+                    # Ensure quantity is positive
+                    if quantity <= 0:
+                        raise ValueError("Quantity must be positive")
 
-    else:
-        form = PickingForm()
+                    # Find the item by barcode or part number
+                    item = Inventory.objects.filter(
+                        Q(barcode=code) | Q(manufacturer_part_number=code)
+                    ).first()
 
-    return render(request, "picking_form.html", {"form": form})
+                    if item:
+                        # Check if there is enough stock
+                        if item.quantity_in_stock >= quantity:
+                            item.quantity_in_stock -= quantity
+                            item.save()
+                        else:
+                            messages.error(
+                                request, f"Not enough stock for item: {code}"
+                            )
+                            all_successful = False
+                    else:
+                        messages.error(request, f"Item not found: {code}")
+                        all_successful = False
+
+                except ValueError as e:
+                    # Handle invalid data
+                    messages.error(request, f"Invalid data for item: {code} - {str(e)}")
+                    all_successful = False
+
+        if all_successful:
+            # If all operations are successful
+            messages.success(request, "All items picked successfully!")
+
+    return render(request, "picking_form.html")

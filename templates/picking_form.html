@@ -2,10 +2,43 @@
 {% load static %}
 {% block content %}
 <div class="content-section">
-  <form method="post">
+  {% if messages %}
+  <div class="messages">
+    {% for message in messages %}
+    <div {% if message.tags %} class="{{ message.tags }}" {% endif %}>
+      {{ message }}
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  <form method="post" id="pickingForm">
     {% csrf_token %}
-    {{ form.as_p }}
+    <div id="formSet">
+      <!-- Placeholder for form fields -->
+    </div>
+    <button type="button" id="addMore">Add More</button>
     <input type="submit" value="Pick">
   </form>
+
+  <script>
+    let formSet = document.getElementById('formSet');
+    let addMore = document.getElementById('addMore');
+
+    addMore.addEventListener('click', function () {
+      let newField = document.createElement('div');
+      newField.innerHTML = `
+            <input type="text" name="code" placeholder="Barcode/Part Number">
+            <input type="number" name="quantity" placeholder="Quantity" min="1">
+            <button type="button" class="remove">Remove</button>
+        `;
+      formSet.appendChild(newField);
+    });
+
+    formSet.addEventListener('click', function (e) {
+      if (e.target.className === 'remove') {
+        e.target.parentElement.remove();
+      }
+    });
+  </script>
 </div>
 {% endblock %}
